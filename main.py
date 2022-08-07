@@ -83,6 +83,9 @@ for i in range(1, 37):
 
 def explode(rubble, x, y):
 
+    # play an explosion sound
+    sounds.eep.play()
+
     nRocks = random.randint(10,15)
 
     for n in range(nRocks):    
@@ -120,6 +123,8 @@ def controlTank(tank, bullets, forward, backward, cw, ccw, shoot):
             bullet = Bullet("bullet1", (tank.gunX, tank.gunY), tank.id, BULLET_SPEED)
             bullet.angle = tank.angle
             bullets.append(bullet)
+            # play shooting sound!
+            sounds.eep.play()
 
 def draw():
     global bullets, bricks, tanks, rubble
@@ -301,6 +306,8 @@ def update(time_interval):
                 explode(rubble, tank.x, tank.y)
                 bullets.pop(i)
                 tanks.pop(k)
+                sounds.eep.play()
+
                 # this bullet is done, move to next one
                 continue
         for j, brick in enumerate(bricks):
