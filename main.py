@@ -4,6 +4,11 @@ import random
 
 import pygame
 
+# look for joysticks
+pygame.init()
+numJoysticks = pygame.joystick.get_count()
+print("Detected num Joysticks: ", numJoysticks)
+
 from Tank import Tank
 from Tank import Bullet
 from Tank import Rock
