@@ -33,11 +33,15 @@ HEIGHT = 1000
 
 cornerOffset = 200
 
-tank_1 = Tank("tank2", (cornerOffset, cornerOffset), WIDTH, HEIGHT, 1)
-tank_2 = Tank("tank2", (WIDTH-cornerOffset, cornerOffset), WIDTH, HEIGHT, 2)
+TANK_SPEED = 1.0 if not useJoysticks else 2.0
+BULLET_SPEED = TANK_SPEED * 3
+ROCK_SPEED = TANK_SPEED * 10
+
+tank_1 = Tank("tank2", (cornerOffset, cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 1)
+tank_2 = Tank("tank2", (WIDTH-cornerOffset, cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 2)
 tank_2.angle = 180.0
-tank_3 = Tank("tank2", (cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, 3)
-tank_4 = Tank("tank2", (WIDTH-cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, 4)
+tank_3 = Tank("tank2", (cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 3)
+tank_4 = Tank("tank2", (WIDTH-cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 4)
 tank_4.angle = 180.0
 
 tanks = [tank_1, tank_2, tank_3, tank_4]
@@ -82,7 +86,7 @@ def explode(rubble, x, y):
     nRocks = random.randint(10,15)
 
     for n in range(nRocks):    
-        rock = Rock('little_rock', (x, y))
+        rock = Rock('little_rock', (x, y), ROCK_SPEED)
         rock.speed = random.randint(3, 8)
         rock.angle = 360.0 * random.random()
 
@@ -113,7 +117,7 @@ def controlTank(tank, bullets, forward, backward, cw, ccw, shoot):
     if shoot:
 
         if tank.canShoot():   
-            bullet = Bullet("bullet1", (tank.gunX, tank.gunY), tank.id)
+            bullet = Bullet("bullet1", (tank.gunX, tank.gunY), tank.id, BULLET_SPEED)
             bullet.angle = tank.angle
             bullets.append(bullet)
 

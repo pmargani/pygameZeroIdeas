@@ -32,18 +32,18 @@ class Obj(Actor):
 
 class Bullet(Obj):
 
-    def __init__(self, image, pos, tankId):
+    def __init__(self, image, pos, tankId, speed):
         Obj.__init__(self, image, pos)
 
         self.tankId = tankId
-        self.speed = 3.0
+        self.speed = speed
 
 class Rock(Obj):
 
-    def __init__(self, image, pos):
+    def __init__(self, image, pos, speed):
         Obj.__init__(self, image, pos)
 
-        self.speed = 10.0
+        self.speed = speed
         self.age = 0
         self.oldAge = 25
 
@@ -56,14 +56,15 @@ class Rock(Obj):
 
 class Tank(Obj):
 
-    def __init__(self, image, pos, screenWidth, screenHeight, id):
+    def __init__(self, image, pos, screenWidth, screenHeight, speed, id):
         Obj.__init__(self, image, pos)
 
         self.id = id
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
 
-
+ 
+        self.absSpeed = speed
         self.speed = 0.0
         self.angle = 0
         self.updateGunPosition()
@@ -83,22 +84,22 @@ class Tank(Obj):
         self.gunY = self.y + offsetY
 
     def moveForward(self):
-        self.speed = 1.0
+        self.speed = self.absSpeed
         self.updateGunPosition()
 
     def moveBackward(self):
-        self.speed = -1.0
+        self.speed = -1.0 * self.absSpeed
         self.updateGunPosition()
 
     def stop(self):
         self.speed = 0    
 
     def rotateCW(self):
-        self.angle -= 1
+        self.angle -= self.absSpeed
         self.updateGunPosition()
 
     def rotateCCW(self):
-        self.angle += 1
+        self.angle += self.absSpeed
         self.updateGunPosition()
 
     def bounceOff(self, obj):
