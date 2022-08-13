@@ -173,6 +173,18 @@ def draw():
         color = GREEN if t is not None else RED
         
         screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 20), color=color)
+        
+        if i < (numJoysticks-1):
+            j = joysticks[i]
+            ax1txt = "ax 1: %f" % j.get_axis(0)
+            ax2txt = "ax 2: %f" % j.get_axis(1)
+            screen.draw.text(ax1txt, (boxXstart + 5, GAME_HEIGHT + 35), color=color)
+            screen.draw.text(ax2txt, (boxXstart + 5, GAME_HEIGHT + 50), color=color)
+
+            btns = [1, 7, 8, 9]
+            for i, btn in enumerate(btns):
+                txt = "btn %d: %d" % (btn, j.get_button(btn))
+                screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 65 + (i*15)), color=color)
 
 def tankControls(tank, useJoysticks, numJoysticks, keys):
 
