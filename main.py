@@ -18,7 +18,7 @@ for i in range(numJoysticks):
     joysticks.append(j)
 
 # north button goes forward
-USE_JOYSTICK_BTNS = True
+USE_JOYSTICK_BTNS = False
 JOY_BTN_NORTH = 3     
 JOY_BTN_SOUTH = 6    
 JOY_BTN_EAST = 5     
