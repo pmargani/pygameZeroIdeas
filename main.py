@@ -173,7 +173,9 @@ def draw():
         
         screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 20), color=color)
         
-        if i < (numJoysticks-1):
+        # print debug info?
+        testJoysticks = False
+        if i < (numJoysticks-1) and testJoysticks:
             j = joysticks[i]
             ax1txt = "ax 1: %f" % j.get_axis(0)
             ax2txt = "ax 2: %f" % j.get_axis(1)
