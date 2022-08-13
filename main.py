@@ -18,11 +18,16 @@ for i in range(numJoysticks):
     joysticks.append(j)
 
 # north button goes forward
+USE_JOYSTICK_BTNS = True
 JOY_BTN_NORTH = 3     
 JOY_BTN_SOUTH = 6    
 JOY_BTN_EAST = 5     
 JOY_BTN_WEST = 2    
 JOY_BTN_CENTER = 4
+JOY_AXE_UP = 0
+JOY_AXE_DOWN = 1
+JOY_AXE_LEFT = 2
+JOY_AXE_RIGHT = 3
 
 from Tank import Tank
 from Tank import Bullet
@@ -169,6 +174,65 @@ def draw():
         
         screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 20), color=color)
 
+def tankControls(tank, useJoysticks, numJoysticks, keys):
+
+    if tank is None:
+        return
+
+    joyId = tank.id - 1
+    if useJoysticks and numJoysticks > 0:
+        j = joysticks[joyId]
+        if USE_JOYSTICK_BTNS:
+            controlTank(
+                tank,
+                bullets,
+                j.get_button(JOY_BTN_NORTH), # forward
+                j.get_button(JOY_BTN_SOUTH), # backward
+                j.get_button(JOY_BTN_EAST), # cw
+                j.get_button(JOY_BTN_WEST), # ccw
+                j.get_button(JOY_BTN_CENTER) # shoot         
+            ) 
+        else: 
+            # use actual joystick!!  
+            axis1 = j.get_axis(0)
+            axis2 = j.get_axis(1)
+            forward = backward = cw = ccw = False
+            if axis1 >= 1:
+                forward = True
+            if axis1 <= -1:
+                backward = True  
+            if axis2 >= 1:
+                cw = True
+            if axis2 <= -1:
+                ccw = True                 
+            controlTank(
+                tank,
+                bullets,
+                forward,
+                backward,
+                cw,
+                ccw,
+                # j.get_button(JOY_AXE_UP),
+                # j.get_button(JOY_AXE_DOWN),
+                # j.get_button(JOY_AXE_LEFT),
+                # j.get_button(JOY_AXE_RIGHT),
+                j.get_button(JOY_AXE_CENTER)          
+            )     
+    else:
+        controlTank(
+            tank, 
+            bullets,
+            keys[0],
+            keys[1],
+            keys[2],
+            keys[3],
+            keys[4]
+        )    
+            # keyboard.up,
+            # keyboard.down,
+            # keyboard.right,
+            # keyboard.left,
+            # keyboard.space)    
 
 def update(time_interval):
     global bullets, tanks, rubble
@@ -183,138 +247,56 @@ def update(time_interval):
     # *** Tank 1 Controls
     tank1 = getTankById(tanks, 1)
     if tank1 is not None:
-        if useJoysticks and numJoysticks > 0:
-            j = joysticks[0]
-            controlTank(
-                tank1,
-                bullets,
-                j.get_button(JOY_BTN_NORTH),
-                j.get_button(JOY_BTN_SOUTH),
-                j.get_button(JOY_BTN_EAST),
-                j.get_button(JOY_BTN_WEST),
-                j.get_button(JOY_BTN_CENTER))
-        else:
-            controlTank(
-                tank1,
-                bullets,
-                keyboard.up,
-                keyboard.down,
-                keyboard.right,
-                keyboard.left,
-                keyboard.space)
+        keys = (
+            keyboard.up,
+            keyboard.down,
+            keyboard.right,
+            keyboard.left,
+            keyboard.space
+        )
+        tankControls(tank1, useJoysticks, numJoysticks, keys)
 
-        # if keyboard.up or keyboard.down:
-        #     if keyboard.up:
-        #         tank1.moveForward()
-        #     else:
-        #         tank1.moveBackward()    
-        # else:   
-        #     tank1.stop()
 
-        # if keyboard.left:
-        #     tank1.rotateCCW()
-
-        # if keyboard.right:
-        #     tank1.rotateCW()
-
-        # if keyboard.space:
-
-        #     if tank1.canShoot():   
-        #         bullet = Bullet("bullet1", (tank1.gunX, tank1.gunY), tank1.id)
-        #         bullet.angle = tank1.angle
-        #         bullets.append(bullet)
-
-    # *** End Tank1 Controls
 
     # *** Tank 2 Controls
     tank2 = getTankById(tanks, 2)
     if tank2 is not None:
-        if useJoysticks and numJoysticks > 1:
-            j = joysticks[1]
-            controlTank(
-                tank2,
-                bullets,
-                j.get_button(JOY_BTN_NORTH),
-                j.get_button(JOY_BTN_SOUTH),
-                j.get_button(JOY_BTN_EAST),
-                j.get_button(JOY_BTN_WEST),
-                j.get_button(JOY_BTN_CENTER))
-        else:    
-            controlTank(
-                tank2,
-                bullets,
-                keyboard.w,
-                keyboard.s,
-                keyboard.d,
-                keyboard.a,
-                keyboard.z)
+        keys = (
+            keyboard.w,
+            keyboard.s,
+            keyboard.d,
+            keyboard.a,
+            keyboard.b
+        )
+        tankControls(tank2, useJoysticks, numJoysticks, keys)
 
-        # if keyboard.w or keyboard.s:
-        #     if keyboard.w:
-        #         tank2.moveForward()
-        #     else:
-        #         tank2.moveBackward()    
-        # else:   
-        #     tank2.stop()
-
-        # if keyboard.a:
-        #     tank2.rotateCCW()
-
-        # if keyboard.d:
-        #     tank2.rotateCW()
-
-        # if keyboard.z:
-
-        #     if tank2.canShoot():   
-        #         bullet = Bullet("bullet1", (tank2.gunX, tank2.gunY), tank2.id)
-        #         bullet.angle = tank2.angle
-        #         bullets.append(bullet)
-
-    # *** End Tank2 Controls
 
     tank3 = getTankById(tanks, 3)
     if tank3 is not None:
-        if useJoysticks and numJoysticks > 2:
-            j = joysticks[2]
-            controlTank(
-                tank3,
-                bullets,
-                j.get_button(JOY_BTN_NORTH),
-                j.get_button(JOY_BTN_SOUTH),
-                j.get_button(JOY_BTN_EAST),
-                j.get_button(JOY_BTN_WEST),
-                j.get_button(JOY_BTN_CENTER))
-        else:    
-            controlTank(
-                tank3,
-                bullets,
-                keyboard.i,
-                keyboard.k,
-                keyboard.j,
-                keyboard.l,
-                keyboard.m)
+        keys = (
+            keyboard.i,
+            keyboard.k,
+            keyboard.j,
+            keyboard.l,
+            keyboard.m
+        )
+        tankControls(tank3, useJoysticks, numJoysticks, keys)
+
 
     tank4 = getTankById(tanks, 4)
     if tank4 is not None:
-        if useJoysticks and numJoysticks > 3:
-            j = joysticks[3]
-            controlTank(
-                tank4,
-                bullets,
-                j.get_button(JOY_BTN_NORTH),
-                j.get_button(JOY_BTN_SOUTH),
-                j.get_button(JOY_BTN_EAST),
-                j.get_button(JOY_BTN_WEST),
-                j.get_button(JOY_BTN_CENTER))
-        else:    
-            controlTank(
-                tank4,
-                bullets,
-                keyboard.t,
-                keyboard.g,
-                keyboard.h,
-                keyboard.f,
-                keyboard.v)
+        keys = (
+            keyboard.t,
+            keyboard.g,
+            keyboard.h,
+            keyboard.f,
+            keyboard.v
+        )        
+        tankControls(tank4, useJoysticks, numJoysticks, keys)
+     
+
+
+    # *** End Tank Controls
 
     # keep tanks off bricks
     for brick in bricks:
