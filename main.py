@@ -181,9 +181,9 @@ def draw():
             screen.draw.text(ax2txt, (boxXstart + 5, GAME_HEIGHT + 50), color=color)
 
             btns = [1, 7, 8, 9]
-            for i, btn in enumerate(btns):
+            for k, btn in enumerate(btns):
                 txt = "btn %d: %d" % (btn, j.get_button(btn))
-                screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 65 + (i*15)), color=color)
+                screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 65 + (k*15)), color=color)
 
 def tankControls(tank, useJoysticks, numJoysticks, keys):
 
@@ -191,7 +191,7 @@ def tankControls(tank, useJoysticks, numJoysticks, keys):
         return
 
     joyId = tank.id - 1
-    if useJoysticks and numJoysticks > 0:
+    if useJoysticks and numJoysticks > joyId:
         j = joysticks[joyId]
         if USE_JOYSTICK_BTNS:
             controlTank(
@@ -253,8 +253,8 @@ def update(time_interval):
     # user quitting?
     if keyboard.escape:
         sys.exit()
-    if useJoysticks and numJoysticks > 1:
-        j = joysticks[0]
+    if useJoysticks and numJoysticks > 2:
+        j = joysticks[1]
         if j.get_button(JOY_BTN_COIN) and j.get_button(JOY_BTN_PLAYER):
             sys.exit()
 
