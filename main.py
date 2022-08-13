@@ -24,10 +24,9 @@ JOY_BTN_SOUTH = 6
 JOY_BTN_EAST = 5     
 JOY_BTN_WEST = 2    
 JOY_BTN_CENTER = 4
-JOY_AXE_UP = 0
-JOY_AXE_DOWN = 1
-JOY_AXE_LEFT = 2
-JOY_AXE_RIGHT = 3
+JOY_BTN_COIN = 0
+JOY_BTN_PLAYER = 1
+
 
 from Tank import Tank
 from Tank import Bullet
@@ -209,14 +208,14 @@ def tankControls(tank, useJoysticks, numJoysticks, keys):
             axis1 = j.get_axis(0)
             axis2 = j.get_axis(1)
             forward = backward = cw = ccw = False
-            if axis1 >= 1:
+            if axis1 >= .8:
+                ccw = True
+            if axis1 <= -.8:
+                cw = True  
+            if axis2 >= .8:
                 forward = True
-            if axis1 <= -1:
-                backward = True  
-            if axis2 >= 1:
-                cw = True
-            if axis2 <= -1:
-                ccw = True                 
+            if axis2 <= -.8:
+                backward = True                 
             controlTank(
                 tank,
                 bullets,
@@ -251,8 +250,13 @@ def update(time_interval):
 
     now = time.time()
 
+    # user quitting?
     if keyboard.escape:
         sys.exit()
+    if useJoysticks and numJoysticks > 1:
+        j = joysticks[0]
+        if j.get_button(JOY_BTN_COIN) and j.get_button(JOY_BTN_PLAYER):
+            sys.exit()
 
 
 
