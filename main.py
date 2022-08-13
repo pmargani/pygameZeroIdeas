@@ -37,11 +37,11 @@ TANK_SPEED = 1.0 if not useJoysticks else 2.0
 BULLET_SPEED = TANK_SPEED * 3
 ROCK_SPEED = TANK_SPEED * 10
 
-tank_1 = Tank("tank2", (cornerOffset, cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 1)
+tank_1 = Tank("tank1", (cornerOffset, cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 1)
 tank_2 = Tank("tank2", (WIDTH-cornerOffset, cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 2)
 tank_2.angle = 180.0
-tank_3 = Tank("tank2", (cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 3)
-tank_4 = Tank("tank2", (WIDTH-cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 4)
+tank_3 = Tank("tank3", (cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 3)
+tank_4 = Tank("tank4", (WIDTH-cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 4)
 tank_4.angle = 180.0
 
 tanks = [tank_1, tank_2, tank_3, tank_4]
@@ -51,17 +51,17 @@ bullets = []
 rubble = []
 
 # make a wall going down the middle
-brick = Actor("lego_brick", (700, 200))
+brick = Actor("wall", (700, 200))
 bWidth = brick.width
 # bricks = [brick]
 bricks = []
 for i in range(1, 37):
     yPos = 10 + (bWidth*i)
     xPos = (WIDTH/2) - (bWidth/2)
-    brick = Actor("lego_brick", (xPos, yPos))
+    brick = Actor("wall", (xPos, yPos))
     bricks.append(brick)
     xPos = (WIDTH/2) + (bWidth/2)
-    brick = Actor("lego_brick", (xPos, yPos))
+    brick = Actor("wall", (xPos, yPos))
     bricks.append(brick)
 
 # make another wall
@@ -69,10 +69,10 @@ for i in range(1, 37):
     xPos = 10 + (bWidth*i)
 
     yPos = (HEIGHT/2) - (bWidth/2)
-    brick = Actor("lego_brick", (xPos, yPos))
+    brick = Actor("wall", (xPos, yPos))
     bricks.append(brick)
     yPos = (HEIGHT/2) + (bWidth/2)
-    brick = Actor("lego_brick", (xPos, yPos))
+    brick = Actor("wall", (xPos, yPos))
     bricks.append(brick)
 
 #tank1._surf = pygame.transform.scale(tank1._surf, (50, 50))
@@ -89,7 +89,7 @@ def explode(rubble, x, y):
     nRocks = random.randint(10,15)
 
     for n in range(nRocks):    
-        rock = Rock('little_rock', (x, y), ROCK_SPEED)
+        rock = Rock('shrapnel', (x, y), ROCK_SPEED)
         rock.speed = random.randint(3, 8)
         rock.angle = 360.0 * random.random()
 
@@ -120,7 +120,7 @@ def controlTank(tank, bullets, forward, backward, cw, ccw, shoot):
     if shoot:
 
         if tank.canShoot():   
-            bullet = Bullet("bullet1", (tank.gunX, tank.gunY), tank.id, BULLET_SPEED)
+            bullet = Bullet("bullet", (tank.gunX, tank.gunY), tank.id, BULLET_SPEED)
             bullet.angle = tank.angle
             bullets.append(bullet)
             # play shooting sound!
