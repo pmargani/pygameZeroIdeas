@@ -28,8 +28,16 @@ from Tank import Tank
 from Tank import Bullet
 from Tank import Rock
 
-WIDTH = 1000
+WIDTH = 800
 HEIGHT = 1000
+
+GAME_HEIGHT = 800
+
+# colors
+BLACK = (0, 0, 0)
+WHITE = (128, 128, 128)
+RED = (128, 0, 0)
+GREEN = (0, 128, 0)
 
 cornerOffset = 200
 
@@ -37,11 +45,11 @@ TANK_SPEED = 1.0 if not useJoysticks else 2.0
 BULLET_SPEED = TANK_SPEED * 3
 ROCK_SPEED = TANK_SPEED * 10
 
-tank_1 = Tank("tank1", (cornerOffset, cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 1)
-tank_2 = Tank("tank2", (WIDTH-cornerOffset, cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 2)
+tank_1 = Tank("tank1", (cornerOffset, cornerOffset), WIDTH, GAME_HEIGHT, TANK_SPEED, 1)
+tank_2 = Tank("tank2", (WIDTH-cornerOffset, cornerOffset), WIDTH, GAME_HEIGHT, TANK_SPEED, 2)
 tank_2.angle = 180.0
-tank_3 = Tank("tank3", (cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 3)
-tank_4 = Tank("tank4", (WIDTH-cornerOffset, HEIGHT-cornerOffset), WIDTH, HEIGHT, TANK_SPEED, 4)
+tank_3 = Tank("tank3", (cornerOffset, GAME_HEIGHT-cornerOffset), WIDTH, GAME_HEIGHT, TANK_SPEED, 3)
+tank_4 = Tank("tank4", (WIDTH-cornerOffset, GAME_HEIGHT-cornerOffset), WIDTH, GAME_HEIGHT, TANK_SPEED, 4)
 tank_4.angle = 180.0
 
 tanks = [tank_1, tank_2, tank_3, tank_4]
@@ -54,8 +62,9 @@ rubble = []
 brick = Actor("wall", (700, 200))
 bWidth = brick.width
 # bricks = [brick]
+n = 32
 bricks = []
-for i in range(1, 37):
+for i in range(1, n):
     yPos = 10 + (bWidth*i)
     xPos = (WIDTH/2) - (bWidth/2)
     brick = Actor("wall", (xPos, yPos))
@@ -65,13 +74,13 @@ for i in range(1, 37):
     bricks.append(brick)
 
 # make another wall
-for i in range(1, 37):
+for i in range(1, n):
     xPos = 10 + (bWidth*i)
 
-    yPos = (HEIGHT/2) - (bWidth/2)
+    yPos = (GAME_HEIGHT/2) - (bWidth/2)
     brick = Actor("wall", (xPos, yPos))
     bricks.append(brick)
-    yPos = (HEIGHT/2) + (bWidth/2)
+    yPos = (GAME_HEIGHT/2) + (bWidth/2)
     brick = Actor("wall", (xPos, yPos))
     bricks.append(brick)
 
@@ -130,7 +139,7 @@ def draw():
     global bullets, bricks, tanks, rubble
 
     # screen.blit("background", (0,0))
-    screen.fill((128,0,0))
+    screen.fill(BLACK)
 
     for tank in tanks:
         tank.draw()
@@ -140,6 +149,26 @@ def draw():
         brick.draw() 
     for rock in rubble:
         rock.draw()       
+
+    # draw borders for arean and player stats area
+    # white = (128, 128, 128)
+    screen.draw.rect(Rect((0,0),(WIDTH, GAME_HEIGHT)), WHITE)
+
+    playerBoxWidth = WIDTH / 4
+    for i in range(4):
+        boxXstart = (playerBoxWidth*i) + 1
+        r = Rect((boxXstart, GAME_HEIGHT + 1), (boxXstart + playerBoxWidth - 1, HEIGHT - 1))
+        screen.draw.rect(r, WHITE)
+
+        screen.draw.text("Player %d" % (i+1), (boxXstart + 5, GAME_HEIGHT + 5))
+
+        t = getTankById(tanks, i+1)
+
+        txt = "Alive" if t is not None else "Dead"
+        color = GREEN if t is not None else RED
+        
+        screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 20), color=color)
+
 
 def update(time_interval):
     global bullets, tanks, rubble
@@ -295,7 +324,7 @@ def update(time_interval):
 
     # remove bullets offscreen
     for i, bullet in enumerate(bullets):
-        if bullet.x < 0 or bullet.x > WIDTH or bullet.y < 0 or bullet.y > HEIGHT:
+        if bullet.x < 0 or bullet.x > WIDTH or bullet.y < 0 or bullet.y > GAME_HEIGHT:
             bullets.pop(i)
             
     # remove bullets and tanks that collide
