@@ -228,7 +228,7 @@ def tankControls(tank, useJoysticks, numJoysticks, keys):
                 # j.get_button(JOY_AXE_DOWN),
                 # j.get_button(JOY_AXE_LEFT),
                 # j.get_button(JOY_AXE_RIGHT),
-                j.get_button(JOY_AXE_CENTER)          
+                j.get_button(JOY_BTN_CENTER)          
             )     
     else:
         controlTank(
