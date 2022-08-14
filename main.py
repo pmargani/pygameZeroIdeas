@@ -180,6 +180,7 @@ def controlTank(tank, bullets, forward, backward, cw, ccw, shoot):
             bullet = Bullet("bullet", (tank.gunX, tank.gunY), tank.id, BULLET_SPEED)
             bullet.angle = tank.angle
             bullets.append(bullet)
+            tank.numAmmo-=1
             # play shooting sound!
             sounds.eep.play()
 
@@ -220,7 +221,14 @@ def draw():
         #print kills
         tank = getTankById(tanks, i+1)
         if tank is not None:
+            
+            ammoColor = RED
+            if tank.numAmmo > 0:
+                ammoColor = WHITE
+
             screen.draw.text("Kills: %d" % tank.kills, (boxXstart + 5, GAME_HEIGHT + 40), color=WHITE)
+            screen.draw.text("Ammo: %d" % tank.numAmmo, (boxXstart + 5, GAME_HEIGHT + 60), color=ammoColor)
+            screen.draw.text("Time until ammo: %d" % (tank.timeUntilAmmo - tank.ammoCounter), ((WIDTH/2) - 80, GAME_HEIGHT - 20), color=WHITE)
 
         # print debug info?
         testJoysticks = False

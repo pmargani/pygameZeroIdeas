@@ -67,6 +67,12 @@ class Tank(Obj):
         self.screenHeight = screenHeight
 
         self.kills = 0
+        
+        self.maxAmmo = 10
+        self.numAmmo = 7
+        self.ammoCounter = 0
+        self.timeUntilAmmo = 1500
+
         self.absSpeed = speed
         self.speed = 0.0
         self.angle = 0
@@ -120,24 +126,28 @@ class Tank(Obj):
         self.y -= offsetY
 
     def canShoot(self):
-        if self.lastTimeShot is None:
+        if self.lastTimeShot is None and self.numAmmo > 0:
             # first shot!
             self.lastTimeShot = time.time()
             return True
         else:
-            if time.time() - self.lastTimeShot > self.secondsPerShot:
+            if time.time() - self.lastTimeShot > self.secondsPerShot and self.numAmmo > 0:
                 self.lastTimeShot = time.time()
                 return True
 
     def update(self):
         Obj.update(self)
-
+        self.ammoCounter+=1
+        if self.ammoCounter > self.timeUntilAmmo:
+            if self.numAmmo < self.maxAmmo:
+                self.numAmmo+=1
+            self.ammoCounter = 0
         # keep tank on screen
         if self.x < 0:
-            self.x = 1
+            self.x = 10
         if self.x > self.screenWidth:
-            self.x = self.screenWidth - 1
+            self.x = self.screenWidth - 10
         if self.y < 0:
-            self.y = 1
+            self.y = 10
         if self.y > self.screenHeight:
-            self.y = self.screenHeight - 1    
+            self.y = self.screenHeight - 10    
