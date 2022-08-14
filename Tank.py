@@ -66,7 +66,7 @@ class Tank(Obj):
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
 
- 
+        self.kills = 0
         self.absSpeed = speed
         self.speed = 0.0
         self.angle = 0
@@ -112,7 +112,7 @@ class Tank(Obj):
         angleToObj = self.angle_to(pos)
 
         # displace our position by the vector to this angle
-        offset = 10.
+        offset = 1.
         offsetX = math.cos(deg2rad(angleToObj)) * offset  
         offsetY = -math.sin(deg2rad(angleToObj)) * offset       
 

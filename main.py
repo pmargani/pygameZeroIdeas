@@ -42,10 +42,10 @@ JOY_BTN_PLAYER = 1
 
 
 # screen dimensions
-WIDTH = 1600
-HEIGHT = 900
+WIDTH = 600
+HEIGHT = 500
 
-GAME_HEIGHT = 800
+GAME_HEIGHT = 400
 
 # colors
 BLACK = (0, 0, 0)
@@ -53,7 +53,7 @@ WHITE = (128, 128, 128)
 RED = (128, 0, 0)
 GREEN = (0, 128, 0)
 
-cornerOffset = 200
+cornerOffset = 50
 
 # all speeds are relative to the tank's speed
 TANK_SPEED = int(config[D]["tankSpeed1"]) if not useJoysticks else int(config[D]["tankSpeed2"])
@@ -174,12 +174,12 @@ def draw():
 
     # draw borders for arean and player stats area
     # white = (128, 128, 128)
-    screen.draw.rect(Rect((0,0),(WIDTH, GAME_HEIGHT)), WHITE)
+    screen.draw.rect(Rect((1,1),(WIDTH-2, GAME_HEIGHT)), WHITE)
 
     playerBoxWidth = WIDTH / 4
     for i in range(4):
         boxXstart = (playerBoxWidth*i) + 1
-        r = Rect((boxXstart, GAME_HEIGHT + 1), (boxXstart + playerBoxWidth - 1, HEIGHT - 1))
+        r = Rect((boxXstart, GAME_HEIGHT + 1), (boxXstart + playerBoxWidth - 1, HEIGHT))
         screen.draw.rect(r, WHITE)
 
         screen.draw.text("Player %d" % (i+1), (boxXstart + 5, GAME_HEIGHT + 5))
