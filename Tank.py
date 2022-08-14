@@ -40,12 +40,15 @@ class Bullet(Obj):
 
 class Rock(Obj):
 
-    def __init__(self, image, pos, speed):
+    def __init__(self, image, pos, speed, lifetime=None):
         Obj.__init__(self, image, pos)
 
         self.speed = speed
         self.age = 0
-        self.oldAge = 25
+        if lifetime is None:
+            self.oldAge = 25
+        else:
+            self.oldAge = lifetime    
 
     def update(self):
         Obj.update(self)

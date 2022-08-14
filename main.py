@@ -1,8 +1,18 @@
 import sys
 import time
 import random
+import configparser
 
 import pygame
+
+
+from Tank import Tank
+from Tank import Bullet
+from Tank import Rock
+
+# load config info
+config = configparser("Tank.conf")
+D = "DEFAULT"
 
 # look for joysticks
 pygame.init()
@@ -17,6 +27,7 @@ for i in range(numJoysticks):
     j.init()
     joysticks.append(j)
 
+# Joystick constants
 # north button goes forward
 USE_JOYSTICK_BTNS = False
 JOY_BTN_NORTH = 3     
@@ -28,12 +39,10 @@ JOY_BTN_COIN = 0
 JOY_BTN_PLAYER = 1
 
 
-from Tank import Tank
-from Tank import Bullet
-from Tank import Rock
 
-WIDTH = 800
-HEIGHT = 1000
+# screen dimensions
+WIDTH = 1600
+HEIGHT = 900
 
 GAME_HEIGHT = 800
 
@@ -45,10 +54,12 @@ GREEN = (0, 128, 0)
 
 cornerOffset = 200
 
-TANK_SPEED = 1.0 if not useJoysticks else 2.0
+# all speeds are relative to the tank's speed
+TANK_SPEED = config[D]["tankSpeed1"] if not useJoysticks else config[D]["tankSpeed2"]
 BULLET_SPEED = TANK_SPEED * 3
 ROCK_SPEED = TANK_SPEED * 10
 
+# initialize four players in four corners
 tank_1 = Tank("tank1", (cornerOffset, cornerOffset), WIDTH, GAME_HEIGHT, TANK_SPEED, 1)
 tank_2 = Tank("tank2", (WIDTH-cornerOffset, cornerOffset), WIDTH, GAME_HEIGHT, TANK_SPEED, 2)
 tank_2.angle = 180.0
@@ -78,7 +89,7 @@ for i in range(1, n):
     bricks.append(brick)
 
 # make another wall
-for i in range(1, n):
+for i in range(1, n*2):
     xPos = 10 + (bWidth*i)
 
     yPos = (GAME_HEIGHT/2) - (bWidth/2)
@@ -95,14 +106,20 @@ for i in range(1, n):
 
 
 def explode(rubble, x, y):
+    "An Explosion causes random pieces of shrapnel to radiate out"
 
     # play an explosion sound
     sounds.eep.play()
 
-    nRocks = random.randint(10,15)
+    # how much shrpanel?
+    minShrapnel = config[D]['minShrapnel']
+    maxShrapnel = config[D]['maxShrapnel']
+    nRocks = random.randint(minShrapnel, maxShrapnel)
 
+    shrapnelLifetime = config[D]['shrapnelLifetime']
+    
     for n in range(nRocks):    
-        rock = Rock('shrapnel', (x, y), ROCK_SPEED)
+        rock = Rock('shrapnel', (x, y), ROCK_SPEED, lifetime=shrapnelLifetime)
         rock.speed = random.randint(3, 8)
         rock.angle = 360.0 * random.random()
 
