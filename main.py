@@ -91,11 +91,11 @@ JOY_BTN_PLAYER = 1
 
 
 
-# screen dimensions should be 1600 x 1000
-WIDTH = 1000
-HEIGHT = 800
+# screen dimensions should be 1600 x 1000, game height of 800
+WIDTH = 1600
+HEIGHT = 1000
 
-GAME_HEIGHT = 600
+GAME_HEIGHT = 800
 
 # colors
 BLACK = (0, 0, 0)
