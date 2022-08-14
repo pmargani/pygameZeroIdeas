@@ -11,7 +11,8 @@ from Tank import Bullet
 from Tank import Rock
 
 # load config info
-config = configparser("Tank.conf")
+config = configparser.ConfigParser()
+config.read("Tank.conf")
 D = "DEFAULT"
 
 # look for joysticks
@@ -55,7 +56,7 @@ GREEN = (0, 128, 0)
 cornerOffset = 200
 
 # all speeds are relative to the tank's speed
-TANK_SPEED = config[D]["tankSpeed1"] if not useJoysticks else config[D]["tankSpeed2"]
+TANK_SPEED = int(config[D]["tankSpeed1"]) if not useJoysticks else int(config[D]["tankSpeed2"])
 BULLET_SPEED = TANK_SPEED * 3
 ROCK_SPEED = TANK_SPEED * 10
 
@@ -112,12 +113,12 @@ def explode(rubble, x, y):
     sounds.eep.play()
 
     # how much shrpanel?
-    minShrapnel = config[D]['minShrapnel']
-    maxShrapnel = config[D]['maxShrapnel']
+    minShrapnel = int(config[D]['minShrapnel'])
+    maxShrapnel = int(config[D]['maxShrapnel'])
     nRocks = random.randint(minShrapnel, maxShrapnel)
 
-    shrapnelLifetime = config[D]['shrapnelLifetime']
-    
+    shrapnelLifetime = int(config[D]['shrapnelLifetime'])
+
     for n in range(nRocks):    
         rock = Rock('shrapnel', (x, y), ROCK_SPEED, lifetime=shrapnelLifetime)
         rock.speed = random.randint(3, 8)
