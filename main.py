@@ -92,7 +92,7 @@ JOY_BTN_PLAYER = 1
 
 
 # screen dimensions should be 1600 x 1000, game height of 800
-WIDTH = 1000
+WIDTH = 1300
 HEIGHT = 800
 
 GAME_HEIGHT = 600
@@ -228,6 +228,7 @@ def draw():
 
             screen.draw.text("Kills: %d" % tank.kills, (boxXstart + 5, GAME_HEIGHT + 40), color=WHITE)
             screen.draw.text("Ammo: %d" % tank.numAmmo, (boxXstart + 5, GAME_HEIGHT + 60), color=ammoColor)
+            screen.draw.text("Time until ammo: %d" % (tank.timeUntilAmmo - tank.ammoCounter), ((WIDTH/2) - 80, GAME_HEIGHT - 20), color=WHITE)
 
         # print debug info?
         testJoysticks = False

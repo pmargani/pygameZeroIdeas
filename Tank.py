@@ -67,7 +67,11 @@ class Tank(Obj):
         self.screenHeight = screenHeight
 
         self.kills = 0
-        self.numAmmo = 10
+        
+        self.maxAmmo = 10
+        self.numAmmo = 7
+        self.ammoCounter = 0
+        self.timeUntilAmmo = 1500
 
         self.absSpeed = speed
         self.speed = 0.0
@@ -133,7 +137,11 @@ class Tank(Obj):
 
     def update(self):
         Obj.update(self)
-
+        self.ammoCounter+=1
+        if self.ammoCounter > self.timeUntilAmmo:
+            if self.numAmmo < self.maxAmmo:
+                self.numAmmo+=1
+            self.ammoCounter = 0
         # keep tank on screen
         if self.x < 0:
             self.x = 1
