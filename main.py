@@ -92,10 +92,10 @@ JOY_BTN_PLAYER = 1
 
 
 # screen dimensions should be 1600 x 1000, game height of 800
-WIDTH = 1600
-HEIGHT = 1000
+WIDTH = 1000
+HEIGHT = 800
 
-GAME_HEIGHT = 800
+GAME_HEIGHT = 600
 
 # colors
 BLACK = (0, 0, 0)
@@ -180,6 +180,7 @@ def controlTank(tank, bullets, forward, backward, cw, ccw, shoot):
             bullet = Bullet("bullet", (tank.gunX, tank.gunY), tank.id, BULLET_SPEED)
             bullet.angle = tank.angle
             bullets.append(bullet)
+            tank.numAmmo-=1
             # play shooting sound!
             sounds.eep.play()
 
@@ -220,7 +221,13 @@ def draw():
         #print kills
         tank = getTankById(tanks, i+1)
         if tank is not None:
+            
+            ammoColor = RED
+            if tank.numAmmo > 0:
+                ammoColor = WHITE
+
             screen.draw.text("Kills: %d" % tank.kills, (boxXstart + 5, GAME_HEIGHT + 40), color=WHITE)
+            screen.draw.text("Ammo: %d" % tank.numAmmo, (boxXstart + 5, GAME_HEIGHT + 60), color=ammoColor)
 
         # print debug info?
         testJoysticks = False

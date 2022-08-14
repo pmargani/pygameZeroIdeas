@@ -67,6 +67,8 @@ class Tank(Obj):
         self.screenHeight = screenHeight
 
         self.kills = 0
+        self.numAmmo = 10
+
         self.absSpeed = speed
         self.speed = 0.0
         self.angle = 0
@@ -120,12 +122,12 @@ class Tank(Obj):
         self.y -= offsetY
 
     def canShoot(self):
-        if self.lastTimeShot is None:
+        if self.lastTimeShot is None and self.numAmmo > 0:
             # first shot!
             self.lastTimeShot = time.time()
             return True
         else:
-            if time.time() - self.lastTimeShot > self.secondsPerShot:
+            if time.time() - self.lastTimeShot > self.secondsPerShot and self.numAmmo > 0:
                 self.lastTimeShot = time.time()
                 return True
 
