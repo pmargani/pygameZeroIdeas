@@ -107,7 +107,7 @@ cornerOffset = 50
 
 # all speeds are relative to the tank's speed
 TANK_SPEED = int(config[D]["tankSpeed1"]) if not useJoysticks else int(config[D]["tankSpeed2"])
-BULLET_SPEED = TANK_SPEED * 3
+BULLET_SPEED = TANK_SPEED * 4
 ROCK_SPEED = TANK_SPEED * 10
 
 # initialize four players in four corners
