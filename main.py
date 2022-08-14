@@ -1,6 +1,7 @@
 import sys
 import time
 import random
+import math
 import configparser
 
 import pygame
@@ -14,6 +15,55 @@ from Tank import Rock
 config = configparser.ConfigParser()
 config.read("Tank.conf")
 D = "DEFAULT"
+
+def makeWalls():
+    "Read config file to build walls"
+    W = 'WALLS'
+    numHDblWalls = int(config[W]['numWalls'])
+    print("num walls: ", numHDblWalls)
+    for i in range(0, numHDblWalls):
+        makeWall(i+1)
+
+def makeWall(i):
+    "Make a single wall based off line in config file"
+    print('makeDblWall: ', i)
+    W = 'WALLS'
+    start, stop = eval(config[W]['wall%i' % i])
+    startX, startY = start
+    stopX, stopY = stop
+
+    xStart = startX * WIDTH
+    yStart = startY * GAME_HEIGHT
+    xStop = stopX * WIDTH
+    yStop = stopY * GAME_HEIGHT
+
+    # how long is the wall?
+    xDiff = xStop - xStart
+    yDiff = yStop - yStart
+    length = math.sqrt(xDiff**2 + yDiff**2)
+    thetaRads = math.atan2(yDiff, xDiff)
+
+    stepInX = abs(xDiff) > abs(yDiff)
+    print("stepInX: ", stepInX)
+    stepDiff = xDiff if stepInX else yDiff
+
+    # how many bricks in this wall?
+    brickWidth = 25. # how to not hardcode this?
+    yStep = brickWidth * math.sin(thetaRads)
+    xStep = brickWidth * math.cos(thetaRads)
+
+    numBricks = int( abs(stepDiff) / brickWidth)
+    for i in range(numBricks):
+        if stepInX:
+            xPos = xStart + (i * brickWidth)
+            yPos = yStart + (i * yStep)
+        else:
+            xPos = xStart + (i * xStep)
+            yPos = yStart + (i * brickWidth)  
+        print("brick at ", xPos, yPos)  
+        brick = Actor("wall", (int(xPos), int(yPos)))
+        bricks.append(brick)
+
 
 # look for joysticks
 pygame.init()
@@ -74,36 +124,12 @@ bullets = []
 
 rubble = []
 
-# make a wall going down the middle
-brick = Actor("wall", (700, 200))
-bWidth = brick.width
-# bricks = [brick]
-n = 32
 bricks = []
-for i in range(1, n):
-    yPos = 10 + (bWidth*i)
-    xPos = (WIDTH/2) - (bWidth/2)
-    brick = Actor("wall", (xPos, yPos))
-    bricks.append(brick)
-    xPos = (WIDTH/2) + (bWidth/2)
-    brick = Actor("wall", (xPos, yPos))
-    bricks.append(brick)
 
-# make another wall
-for i in range(1, n*2):
-    xPos = 10 + (bWidth*i)
 
-    yPos = (GAME_HEIGHT/2) - (bWidth/2)
-    brick = Actor("wall", (xPos, yPos))
-    bricks.append(brick)
-    yPos = (GAME_HEIGHT/2) + (bWidth/2)
-    brick = Actor("wall", (xPos, yPos))
-    bricks.append(brick)
+# make walls based off config file
+makeWalls()
 
-#tank1._surf = pygame.transform.scale(tank1._surf, (50, 50))
-# tank1._update_pos()
-# tank1.angle = 0
-# tank2.angle = 0
 
 
 def explode(rubble, x, y):
