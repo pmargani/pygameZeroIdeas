@@ -144,10 +144,10 @@ class Tank(Obj):
             self.ammoCounter = 0
         # keep tank on screen
         if self.x < 0:
-            self.x = 1
+            self.x = 10
         if self.x > self.screenWidth:
-            self.x = self.screenWidth - 1
+            self.x = self.screenWidth - 10
         if self.y < 0:
-            self.y = 1
+            self.y = 10
         if self.y > self.screenHeight:
-            self.y = self.screenHeight - 1    
+            self.y = self.screenHeight - 10    
