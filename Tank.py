@@ -71,7 +71,7 @@ class Tank(Obj):
         self.maxAmmo = 10
         self.numAmmo = 7
         self.ammoCounter = 0
-        self.timeUntilAmmo = 1200
+        self.timeUntilAmmo = 900
 
         self.absSpeed = speed
         self.speed = 0.0
