@@ -91,7 +91,7 @@ JOY_BTN_PLAYER = 1
 
 
 
-# screen dimensions
+# screen dimensions should be 1600 x 1000, game height of 800
 WIDTH = 1600
 HEIGHT = 1000
 
@@ -217,6 +217,11 @@ def draw():
         
         screen.draw.text(txt, (boxXstart + 5, GAME_HEIGHT + 20), color=color)
         
+        #print kills
+        tank = getTankById(tanks, i+1)
+        if tank is not None:
+            screen.draw.text("Kills: %d" % tank.kills, (boxXstart + 5, GAME_HEIGHT + 40), color=WHITE)
+
         # print debug info?
         testJoysticks = False
         if i < (numJoysticks-1) and testJoysticks:
@@ -376,6 +381,10 @@ def update(time_interval):
         for k, tank in enumerate(tanks):
             if bullet.tankId != tank.id and bullet.colliderect(tank):
                 print("bullet hit tank!", tank, tank.id)
+                print("Tank ", bullet.tankId, " got a kill.")
+                tanks[bullet.tankId-1].kills+=1
+                #print("Tank 1 has ", tanks[0].kills, " kills")
+                
                 explode(rubble, tank.x, tank.y)
                 bullets.pop(i)
                 tanks.pop(k)
