@@ -92,10 +92,10 @@ JOY_BTN_PLAYER = 1
 
 
 # screen dimensions should be 1600 x 1000, game height of 800
-WIDTH = 1600
-HEIGHT = 1000
+WIDTH = 1000
+HEIGHT = 700
 
-GAME_HEIGHT = 800
+GAME_HEIGHT = 500
 
 # colors
 BLACK = (0, 0, 0)
@@ -387,12 +387,12 @@ def update(time_interval):
     # remove bullets and tanks that collide
     for i, bullet in enumerate(bullets):
         for k, tank in enumerate(tanks):
+            # print("Tanks = ", tanks[k].kills, ".")
             if bullet.tankId != tank.id and bullet.colliderect(tank):
                 print("bullet hit tank!", tank, tank.id)
                 print("Tank ", bullet.tankId, " got a kill.")
-                tanks[bullet.tankId-1].kills+=1
-                #print("Tank 1 has ", tanks[0].kills, " kills")
-                
+                print("id = ", getTankById(tanks, bullet.tankId))
+                getTankById(tanks, bullet.tankId).kills+=1
                 explode(rubble, tank.x, tank.y)
                 bullets.pop(i)
                 tanks.pop(k)
@@ -402,7 +402,7 @@ def update(time_interval):
                 continue
         for j, brick in enumerate(bricks):
             if bullet.colliderect(brick):
-                explode(rubble, brick.x, brick.y)    
+                explode(rubble, brick.x, brick.y) 
                 bricks.pop(j)    
                 if bullets != []:
                     bullets.pop(i)
