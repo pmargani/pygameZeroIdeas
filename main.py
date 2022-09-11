@@ -15,10 +15,16 @@ from Tank import Rock
 config = configparser.ConfigParser()
 config.read("Tank.conf")
 D = "DEFAULT"
+W = 'WALLS'
+wallNumber = random.randint(0,1)
+if(wallNumber == 0):
+    W = 'WALLS'
+elif(wallNumber == 1):
+    W = 'WILLIE_WALL'
 
 def makeWalls():
     "Read config file to build walls"
-    W = 'WALLS'
+    print("config: ", config[W])
     numHDblWalls = int(config[W]['numWalls'])
     print("num walls: ", numHDblWalls)
     for i in range(0, numHDblWalls):
@@ -27,7 +33,6 @@ def makeWalls():
 def makeWall(i):
     "Make a single wall based off line in config file"
     print('makeDblWall: ', i)
-    W = 'WALLS'
     start, stop = eval(config[W]['wall%i' % i])
     startX, startY = start
     stopX, stopY = stop
