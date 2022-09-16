@@ -15,10 +15,16 @@ from Tank import Rock
 config = configparser.ConfigParser()
 config.read("Tank.conf")
 D = "DEFAULT"
+W = 'WALLS'
+wallNumber = random.randint(0,1)
+if(wallNumber == 0):
+    W = 'WALLS'
+elif(wallNumber == 1):
+    W = 'WILLIE_WALL'
 
 def makeWalls():
     "Read config file to build walls"
-    W = 'WALLS'
+    print("config: ", config[W])
     numHDblWalls = int(config[W]['numWalls'])
     print("num walls: ", numHDblWalls)
     for i in range(0, numHDblWalls):
@@ -27,7 +33,6 @@ def makeWalls():
 def makeWall(i):
     "Make a single wall based off line in config file"
     print('makeDblWall: ', i)
-    W = 'WALLS'
     start, stop = eval(config[W]['wall%i' % i])
     startX, startY = start
     stopX, stopY = stop
@@ -387,12 +392,12 @@ def update(time_interval):
     # remove bullets and tanks that collide
     for i, bullet in enumerate(bullets):
         for k, tank in enumerate(tanks):
+            # print("Tanks = ", tanks[k].kills, ".")
             if bullet.tankId != tank.id and bullet.colliderect(tank):
                 print("bullet hit tank!", tank, tank.id)
                 print("Tank ", bullet.tankId, " got a kill.")
-                tanks[bullet.tankId-1].kills+=1
-                #print("Tank 1 has ", tanks[0].kills, " kills")
-                
+                print("id = ", getTankById(tanks, bullet.tankId))
+                getTankById(tanks, bullet.tankId).kills+=1
                 explode(rubble, tank.x, tank.y)
                 bullets.pop(i)
                 tanks.pop(k)
@@ -402,7 +407,7 @@ def update(time_interval):
                 continue
         for j, brick in enumerate(bricks):
             if bullet.colliderect(brick):
-                explode(rubble, brick.x, brick.y)    
+                explode(rubble, brick.x, brick.y) 
                 bricks.pop(j)    
                 if bullets != []:
                     bullets.pop(i)
